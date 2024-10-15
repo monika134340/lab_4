@@ -1,0 +1,52 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+string runLengthEncode(const string &input) {
+    string encoded = "";
+    int count = 1;
+
+    for (size_t i = 0; i < input.length(); i++) {
+        if (i + 1 < input.length() && input[i] == input[i + 1]) {
+            count++;
+        } else {
+            encoded += input[i];
+            encoded += to_string(count);
+            count = 1; 
+        }
+    }
+
+    return encoded;
+}
+
+string runLengthDecode(const string &input) {
+    string decoded = "";
+    for (size_t i = 0; i < input.length(); i++) {
+        char currentChar = input[i];
+        i++;
+        string countStr = "";
+        while (i < input.length() && isdigit(input[i])) {
+            countStr += input[i];
+            i++;
+        }
+        i--; 
+        int count = stoi(countStr);
+        decoded.append(count, currentChar);
+    }
+
+    return decoded;
+}
+
+int main() {
+    string text = "AAABBBCCDAA";
+    cout << "Original Text: " << text << endl;
+
+    string encodedText = runLengthEncode(text);
+    cout << "Encoded Text: " << encodedText << endl;
+
+    string decodedText = runLengthDecode(encodedText);
+    cout << "Decoded Text: " << decodedText << endl;
+
+    return 0;
+}
